@@ -114,59 +114,7 @@ namespace AeroMC10
         }
 
 
-        public static void SetAnvilCost2()
-        {
-            if (AnvilIsOn)
-            {
-                AnvilIsOn = false;
-                return;
-            }
-            int[] offsets = new int[] { 0x0, 0x18, 0x80, 0x5A8, 0x50, 0x20, 0xA8 };
-            // works on realms and single player
-            var p1 = IntPtr.Add(baseAddress, 0x036A0278);
-            var p1v = (IntPtr)vam.ReadInt64(p1);
-            Console.WriteLine($"p1v: {p1v.AsHex()}");
 
-            var p2 = IntPtr.Add(p1v, 0x0);
-            var p2v = (IntPtr)vam.ReadInt64(p2);
-            Console.WriteLine($"p2v: {p2v.AsHex()}");
-
-            var p3 = IntPtr.Add(p2v, 0x18);
-            var p3v = (IntPtr)vam.ReadInt64(p3);
-            Console.WriteLine($"p3v: {p3v.AsHex()}");
-
-            var p4 = IntPtr.Add(p3v, 0x80);
-            var p4v = (IntPtr)vam.ReadInt64(p4);
-            Console.WriteLine($"p4v: {p4v.AsHex()}");
-
-            var p5 = IntPtr.Add(p4v, 0x5A8);
-            var p5v = (IntPtr)vam.ReadInt64(p5);
-            Console.WriteLine($"p5v: {p5v.AsHex()}");
-
-            var p6 = IntPtr.Add(p5v, 0x50);
-            var p6v = (IntPtr)vam.ReadInt64(p6);
-            Console.WriteLine($"p6v: {p6v.AsHex()}");
-
-            var p7 = IntPtr.Add(p6v, 0x20);
-            var p7v = (IntPtr)vam.ReadInt64(p7);
-            Console.WriteLine($"p7v: {p7v.AsHex()}");
-
-            var p8 = IntPtr.Add(p7v, 0xA8);
-            var p8v = vam.ReadInt32(p8);
-            Console.WriteLine($"p8v: {p8v}");
-            while (true)
-            {
-                var p8v2 = vam.ReadInt32(p8);
-                Console.WriteLine($"p8v: {p8v2}");
-                vam.WriteInt32(p8, 1);
-                Thread.Sleep(1000);
-            }
-
-
-
-
-
-        }
         public static void ToggleFly()
         {
             // works on realms and single player
