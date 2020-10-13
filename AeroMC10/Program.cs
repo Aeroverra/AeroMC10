@@ -76,20 +76,59 @@ namespace AeroMC10
             int staticPointerOffset = 0x036A0278;
             int[] offsets = new int[] { 0x0, 0x18, 0x80, 0x5A8, 0x50, 0x20, 0xA8 };
 
-            var pointer = FindPointer(baseAddress, staticPointerOffset, offsets);
 
-
-
-            while (true)
+            Console.WriteLine("Setting Anvil Cost to 1 for 20 seconds. You may need to click the side of the interface to update the price.");
+            for (int x = 0; x <= 40; x++)
             {
+                var pointer = FindPointer(baseAddress, staticPointerOffset, offsets);
                 var value = vam.ReadInt32(pointer);
-                Console.WriteLine($"value: {value}");
-                // vam.WriteInt32(p8, 1);
-                Thread.Sleep(1000);
+                vam.WriteInt32(pointer, 1);
+                Thread.Sleep(500);
             }
         }
 
-        public static IntPtr FindPointer(IntPtr applicationBaseAddress, int baseAddressOffset, int[] offsets )
+
+
+
+        public static void ToggleFly()
+        {
+
+            int staticPointerOffset = 0x03655728;
+            int[] offsets = new int[] { 0xA8, 0x20, 0x48, 0x10, 0x58, 0x0, 0x8B8 };
+
+            var pointer = FindPointer(baseAddress, staticPointerOffset, offsets);
+
+            while (true)
+            {
+                var p8v2 = vam.ReadInt32(pointer);
+                Console.WriteLine($"p8v: {p8v2}");
+                vam.WriteInt32(pointer, 1);
+                Thread.Sleep(100);
+            }
+
+
+        }
+
+
+        public static void ToggleInstaBreak()
+        {
+            int staticPointerOffset = 0x3683F48;
+            int[] offsets = new int[] { 0xD0, 0x58, 0xB8, 0x158, 0x140, 0x1C84 };
+
+            var pointer = FindPointer(baseAddress, staticPointerOffset, offsets);
+
+            var value = vam.ReadInt32(pointer);
+            if (value == 1)
+            {
+                vam.WriteInt32(pointer, 0);
+            }
+            else
+            {
+                vam.WriteInt32(pointer, 1);
+            }
+
+        }
+        public static IntPtr FindPointer(IntPtr applicationBaseAddress, int baseAddressOffset, int[] offsets)
         {
             //Get the start address by adding the static offset to the base minecraft memory adress
             var pointer = IntPtr.Add(applicationBaseAddress, baseAddressOffset);
@@ -113,97 +152,5 @@ namespace AeroMC10
             return pointer;
         }
 
-
-
-        public static void ToggleFly()
-        {
-            // works on realms and single player
-            var p1 = IntPtr.Add(baseAddress, 0x03655728);
-            var p1v = (IntPtr)vam.ReadInt64(p1);
-            Console.WriteLine($"p1v: {p1v.AsHex()}");
-
-            var p2 = IntPtr.Add(p1v, 0xA8);
-            var p2v = (IntPtr)vam.ReadInt64(p2);
-            Console.WriteLine($"p2v: {p2v.AsHex()}");
-
-            var p3 = IntPtr.Add(p2v, 0x20);
-            var p3v = (IntPtr)vam.ReadInt64(p3);
-            Console.WriteLine($"p3v: {p3v.AsHex()}");
-
-            var p4 = IntPtr.Add(p3v, 0x48);
-            var p4v = (IntPtr)vam.ReadInt64(p4);
-            Console.WriteLine($"p4v: {p4v.AsHex()}");
-
-            var p5 = IntPtr.Add(p4v, 0x10);
-            var p5v = (IntPtr)vam.ReadInt64(p5);
-            Console.WriteLine($"p5v: {p5v.AsHex()}");
-
-            var p6 = IntPtr.Add(p5v, 0x58);
-            var p6v = (IntPtr)vam.ReadInt64(p6);
-            Console.WriteLine($"p6v: {p6v.AsHex()}");
-
-            var p7 = IntPtr.Add(p6v, 0x0);
-            var p7v = (IntPtr)vam.ReadInt64(p7);
-            Console.WriteLine($"p7v: {p7v.AsHex()}");
-
-            var p8 = IntPtr.Add(p7v, 0x8B8);
-            var p8v = vam.ReadInt32(p8);
-            Console.WriteLine($"p8v: {p8v}");
-
-            while (true)
-            {
-                var p8v2 = vam.ReadInt32(p8);
-                Console.WriteLine($"p8v: {p8v2}");
-                vam.WriteInt32(p8, 1);
-                Thread.Sleep(100);
-            }
-
-
-        }
-
-
-        public static void ToggleInstaBreak()
-        {
-            var personalModePointer = new IntPtr(0x29EA64C1EC4);
-            var personalModeValue = vam.ReadInt32(personalModePointer);
-            Console.WriteLine($"Personal Mode: {personalModeValue}");
-
-            var p1 = IntPtr.Add(baseAddress, 0x3683F48);
-            var p1v = (IntPtr)vam.ReadInt64(p1);
-            Console.WriteLine($"p1v: {p1v.AsHex()}");
-
-            var p2 = IntPtr.Add(p1v, 0xD0);
-            var p2v = (IntPtr)vam.ReadInt64(p2);
-            Console.WriteLine($"p2v: {p2v.AsHex()}");
-
-            var p3 = IntPtr.Add(p2v, 0x58);
-            var p3v = (IntPtr)vam.ReadInt64(p3);
-            Console.WriteLine($"p3v: {p3v.AsHex()}");
-
-            var p4 = IntPtr.Add(p3v, 0xB8);
-            var p4v = (IntPtr)vam.ReadInt64(p4);
-            Console.WriteLine($"p4v: {p4v.AsHex()}");
-
-            var p5 = IntPtr.Add(p4v, 0x158);
-            var p5v = (IntPtr)vam.ReadInt64(p5);
-            Console.WriteLine($"p5v: {p5v.AsHex()}");
-
-            var p6 = IntPtr.Add(p5v, 0x140);
-            var p6v = (IntPtr)vam.ReadInt64(p6);
-            Console.WriteLine($"p6v: {p6v.AsHex()}");
-
-            var p7 = IntPtr.Add(p6v, 0x1C84);
-            var p7v = vam.ReadInt32(p7);
-            Console.WriteLine($"p7v: {p7v}");
-            if (p7v == 1)
-            {
-                vam.WriteInt32(p7, 0);
-            }
-            else
-            {
-                vam.WriteInt32(p7, 1);
-            }
-
-        }
     }
 }
