@@ -126,21 +126,21 @@ namespace AeroMC10
         }
         public static void SetAnvilCost()
         {
-            int staticPointerOffset = 0x036A0278;
-            int[] offsets = new int[] { 0x0, 0x18, 0x80, 0x5A8, 0x50, 0x20, 0xA8 };
+            int staticPointerOffset = 0x035F9470;
+            int[] offsets = new int[] { 0x70, 0xBC0, 0x38, 0x10, 0x30, 0x50, 0xA8 };
 
 
-            Console.WriteLine("Setting Anvil Cost to 1 for 20 seconds. You may need to click the side of the interface to update the price.");
-            for (int x = 0; x <= 40; x++)
+            Console.WriteLine("Setting Anvil Cost to 1 for 10 seconds. You may need to click the side of the interface to update the price.");
+            for (int x = 0; x <= 20; x++)
             {
                 var pointer = FindPointer(baseAddress, staticPointerOffset, offsets);
                 var value = vam.ReadInt32(pointer);
                 vam.WriteInt32(pointer, 1);
-                while (true)
-                {
-                    Console.WriteLine(pointer.AsHex());
-                    Thread.Sleep(5000);
-                }
+                //while (true)
+                //{
+                //    Console.WriteLine(pointer.AsHex());
+                //    Thread.Sleep(5000);
+                //}
                 Thread.Sleep(500);
             }
         }
